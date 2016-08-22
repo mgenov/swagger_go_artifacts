@@ -30,8 +30,8 @@ func init() {
 	}
 }
 
-// NewServer creates a new api tgps server but does not configure it
-func NewServer(api *operations.TgpsAPI) *Server {
+// NewServer creates a new api petstore server but does not configure it
+func NewServer(api *operations.PetstoreAPI) *Server {
 	s := new(Server)
 	s.api = api
 	return s
@@ -51,11 +51,11 @@ func (s *Server) ConfigureFlags() {
 	}
 }
 
-// Server for the tgps API
+// Server for the petstore API
 type Server struct {
 	EnabledListeners []string `long:"scheme" description:"the listeners to enable, this can be repeated and defaults to the schemes in the swagger spec"`
 
-	SocketPath    flags.Filename `long:"socket-path" description:"the unix socket to listen on" default:"/var/run/tgps.sock"`
+	SocketPath    flags.Filename `long:"socket-path" description:"the unix socket to listen on" default:"/var/run/petstore.sock"`
 	domainSocketL net.Listener
 
 	Host        string `long:"host" description:"the IP to listen on" default:"localhost" env:"HOST"`
@@ -68,7 +68,7 @@ type Server struct {
 	TLSCertificateKey flags.Filename `long:"tls-key" description:"the private key to use for secure conections" env:"TLS_PRIVATE_KEY"`
 	httpsServerL      net.Listener
 
-	api          *operations.TgpsAPI
+	api          *operations.PetstoreAPI
 	handler      http.Handler
 	hasListeners bool
 }
@@ -94,7 +94,7 @@ func (s *Server) Fatalf(f string, args ...interface{}) {
 }
 
 // SetAPI configures the server with the specified API. Needs to be called before Serve
-func (s *Server) SetAPI(api *operations.TgpsAPI) {
+func (s *Server) SetAPI(api *operations.PetstoreAPI) {
 	if api == nil {
 		s.api = nil
 		s.handler = nil
@@ -135,7 +135,7 @@ func (s *Server) Serve() (err error) {
 		domainSocket.Handler = s.handler
 
 		wg.Add(1)
-		s.Logf("Serving tgps at unix://%s", s.SocketPath)
+		s.Logf("Serving petstore at unix://%s", s.SocketPath)
 		go func(l net.Listener) {
 			defer wg.Done()
 			if err := domainSocket.Serve(l); err != nil {
@@ -152,7 +152,7 @@ func (s *Server) Serve() (err error) {
 		httpServer.Handler = s.handler
 
 		wg.Add(1)
-		s.Logf("Serving tgps at http://%s", s.httpServerL.Addr())
+		s.Logf("Serving petstore at http://%s", s.httpServerL.Addr())
 		go func(l net.Listener) {
 			defer wg.Done()
 			if err := httpServer.Serve(l); err != nil {
@@ -182,7 +182,7 @@ func (s *Server) Serve() (err error) {
 		}
 
 		wg.Add(1)
-		s.Logf("Serving tgps at https://%s", s.httpsServerL.Addr())
+		s.Logf("Serving petstore at https://%s", s.httpsServerL.Addr())
 		go func(l net.Listener) {
 			defer wg.Done()
 			if err := httpsServer.Serve(l); err != nil {

@@ -20,7 +20,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	api := operations.NewTgpsAPI(swaggerSpec)
+	api := operations.NewPetstoreAPI(swaggerSpec)
 	server := restapi.NewServer(api)
 	defer server.Shutdown()
 

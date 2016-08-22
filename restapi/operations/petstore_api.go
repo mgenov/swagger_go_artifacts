@@ -15,9 +15,9 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 )
 
-// NewTgpsAPI creates a new Tgps instance
-func NewTgpsAPI(spec *loads.Document) *TgpsAPI {
-	return &TgpsAPI{
+// NewPetstoreAPI creates a new Petstore instance
+func NewPetstoreAPI(spec *loads.Document) *PetstoreAPI {
+	return &PetstoreAPI{
 		handlers:        make(map[string]map[string]http.Handler),
 		formats:         strfmt.Default,
 		defaultConsumes: "application/json",
@@ -27,8 +27,8 @@ func NewTgpsAPI(spec *loads.Document) *TgpsAPI {
 	}
 }
 
-/*TgpsAPI A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification */
-type TgpsAPI struct {
+/*PetstoreAPI A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification */
+type PetstoreAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context
 	handlers        map[string]map[string]http.Handler
@@ -66,42 +66,42 @@ type TgpsAPI struct {
 }
 
 // SetDefaultProduces sets the default produces media type
-func (o *TgpsAPI) SetDefaultProduces(mediaType string) {
+func (o *PetstoreAPI) SetDefaultProduces(mediaType string) {
 	o.defaultProduces = mediaType
 }
 
 // SetDefaultConsumes returns the default consumes media type
-func (o *TgpsAPI) SetDefaultConsumes(mediaType string) {
+func (o *PetstoreAPI) SetDefaultConsumes(mediaType string) {
 	o.defaultConsumes = mediaType
 }
 
 // SetSpec sets a spec that will be served for the clients.
-func (o *TgpsAPI) SetSpec(spec *loads.Document) {
+func (o *PetstoreAPI) SetSpec(spec *loads.Document) {
 	o.spec = spec
 }
 
 // DefaultProduces returns the default produces media type
-func (o *TgpsAPI) DefaultProduces() string {
+func (o *PetstoreAPI) DefaultProduces() string {
 	return o.defaultProduces
 }
 
 // DefaultConsumes returns the default consumes media type
-func (o *TgpsAPI) DefaultConsumes() string {
+func (o *PetstoreAPI) DefaultConsumes() string {
 	return o.defaultConsumes
 }
 
 // Formats returns the registered string formats
-func (o *TgpsAPI) Formats() strfmt.Registry {
+func (o *PetstoreAPI) Formats() strfmt.Registry {
 	return o.formats
 }
 
 // RegisterFormat registers a custom format validator
-func (o *TgpsAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
+func (o *PetstoreAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
 	o.formats.Add(name, format, validator)
 }
 
-// Validate validates the registrations in the TgpsAPI
-func (o *TgpsAPI) Validate() error {
+// Validate validates the registrations in the PetstoreAPI
+func (o *PetstoreAPI) Validate() error {
 	var unregistered []string
 
 	if o.JSONConsumer == nil {
@@ -136,19 +136,19 @@ func (o *TgpsAPI) Validate() error {
 }
 
 // ServeErrorFor gets a error handler for a given operation id
-func (o *TgpsAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
+func (o *PetstoreAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
 	return o.ServeError
 }
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
-func (o *TgpsAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
+func (o *PetstoreAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
 
 	return nil
 
 }
 
 // ConsumersFor gets the consumers for the specified media types
-func (o *TgpsAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
+func (o *PetstoreAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
 
 	result := make(map[string]runtime.Consumer)
 	for _, mt := range mediaTypes {
@@ -164,7 +164,7 @@ func (o *TgpsAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer 
 }
 
 // ProducersFor gets the producers for the specified media types
-func (o *TgpsAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
+func (o *PetstoreAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
 
 	result := make(map[string]runtime.Producer)
 	for _, mt := range mediaTypes {
@@ -180,7 +180,7 @@ func (o *TgpsAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer 
 }
 
 // HandlerFor gets a http.Handler for the provided operation method and path
-func (o *TgpsAPI) HandlerFor(method, path string) (http.Handler, bool) {
+func (o *PetstoreAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	if o.handlers == nil {
 		return nil, false
 	}
@@ -192,7 +192,7 @@ func (o *TgpsAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	return h, ok
 }
 
-func (o *TgpsAPI) initHandlerCache() {
+func (o *PetstoreAPI) initHandlerCache() {
 	if o.context == nil {
 		o.context = middleware.NewRoutableContext(o.spec, o, nil)
 	}
@@ -225,7 +225,7 @@ func (o *TgpsAPI) initHandlerCache() {
 
 // Serve creates a http handler to serve the API over HTTP
 // can be used directly in http.ListenAndServe(":8000", api.Serve(nil))
-func (o *TgpsAPI) Serve(builder middleware.Builder) http.Handler {
+func (o *PetstoreAPI) Serve(builder middleware.Builder) http.Handler {
 	if len(o.handlers) == 0 {
 		o.initHandlerCache()
 	}

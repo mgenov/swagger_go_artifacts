@@ -13,13 +13,13 @@ import (
 
 // This file is safe to edit. Once it exists it will not be overwritten
 
-//go:generate swagger generate server --target .. --name tgps --spec https://raw.githubusercontent.com/swagger-api/swagger-spec/master/examples/v2.0/json/petstore-expanded.json
+//go:generate swagger generate server --target .. --name petstore --spec https://raw.githubusercontent.com/swagger-api/swagger-spec/master/examples/v2.0/json/petstore-expanded.json
 
-func configureFlags(api *operations.TgpsAPI) {
+func configureFlags(api *operations.PetstoreAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
 }
 
-func configureAPI(api *operations.TgpsAPI) http.Handler {
+func configureAPI(api *operations.PetstoreAPI) http.Handler {
 	// configure the api here
 	api.ServeError = errors.ServeError
 
